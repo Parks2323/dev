@@ -1,0 +1,26 @@
+name: Submit License Plate
+
+on:
+  schedule:
+    - cron: '30 15 * * 1-5' # 8:30 AM PST weekdays
+  workflow_dispatch:
+
+jobs:
+  submit-plate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run plate submit script
+        env:
+          LICENSE_PLATE: ${{ secrets.LICENSE_PLATE }}
+        run: node index.js
